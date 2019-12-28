@@ -1,0 +1,9 @@
+*** Variables ***
+${Url}            http:127.0.0.1:4723/wd/hub
+${platName}       android
+${platVersion}    9
+${devName}        RZ8M61CYLTY
+${appPack}        com.olacabs.customer
+${appAct}         com.olacabs.customer.ui.MainActivity
+${Destination_Address}    Byjus,Bannerghatta Road
+${Pickup_Address}    Vijays Bank Layout

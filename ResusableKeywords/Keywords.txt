@@ -1,0 +1,15 @@
+*** Settings ***
+Documentation     An Example Keyword
+Library           AppiumLibrary
+Library           OperatingSystem
+
+*** Keywords ***
+LoginAndClickSearch
+    [Arguments]    ${Url_Platform}    ${Name_Platform}    ${Version_Platform}    ${Name_dev}    ${App_Package}    ${App_Activity}
+    ...    ${Pickup_Add}
+    AppiumLibrary.Open Application    ${Url_Platform}    platformName=${Name_Platform}    platformVersion=$${Version_Platform}    deviceName=${Name_dev}    appPackage=${App_Package}    appActivity=${App_Activity}
+    #Logs in to the Ola app
+    AppiumLibrary.Wait Until Page Contains Element    ${Search_PickUp}
+    AppiumLibrary.Click Element    ${Search_PickUp}
+    AppiumLibrary.InputText    ${Search_PickUp}    ${Pickup_Add}
+    #Enters the pick up address

@@ -1,0 +1,42 @@
+*** Settings ***
+Documentation     This test case books an Ola app.
+Library           AppiumLibrary
+Library           OperatingSystem
+Resource          ../Data/DataFile.txt
+Resource          ../Data/Xpath.txt
+Resource          ../ResusableKeywords/Keywords.txt
+
+*** Test Cases ***
+Book Ola
+    AppiumLibrary.Open Application    ${Url}    platformName=${platName}    platformVersion=${platVersion}    deviceName=${devName}    appPackage=${appPack}    appActivity=${appAct}
+    #Logs in to the Ola app
+    AppiumLibrary.Wait Until Page Contains Element    ${Search_PickUp}
+    AppiumLibrary.Click Element    ${Search_PickUp}
+    AppiumLibrary.InputText    ${Search_PickUp}    ${Pickup_Address}
+    #Enters the pick up address
+    AppiumLibrary.Wait Until Page Contains Element    ${Search_Destination}
+    AppiumLibrary.Click Element    ${Search_Destination}
+    AppiumLibrary.InputText    ${Search_Destination}    ${Destination_Address}
+    #Enters the destination address
+    AppiumLibrary.Wait Until Page Contains Element    ${Book_Button}
+    AppiumLibrary.Click Element    ${Book_Button}
+    #Books the Cab
+    AppiumLibrary.Wait Until Page Contains Element    ${Cancel_Button}
+    AppiumLibrary.Page Should Contain Text    Start OTP
+    AppiumLibrary.Capture Page Screenshot
+    #Confirmation of the booking
+
+Book Ola using keywords and error handling
+    LoginAndClickSearch    ${Url}    ${platName}    ${platVersion}    ${devName}    ${appPack}    ${appAct}
+    ...    Mg Road
+    AppiumLibrary.Wait Until Page Contains Element    ${Search_Destination}
+    AppiumLibrary.Click Element    ${Search_Destination}
+    AppiumLibrary.InputText    ${Search_Destination}    ${Destination_Address}
+    #Enters the destination address
+    AppiumLibrary.Wait Until Page Contains Element    ${Book_Button}
+    AppiumLibrary.Click Element    ${Book_Button}
+    #Books the Cab
+    Run Keyword And Ignore Error    AppiumLibrary.Wait Until Page Contains Element    ${Cancel_Button}
+    ${result}    Run Keyword And Ignore Error    AppiumLibrary.Page Should Contain Text    Start OTP
+    Run Keyword If    '${result}'=="PASS"    Pass Execution    This test case passed
+    ...    ELSE    Fail    This test case has failed
